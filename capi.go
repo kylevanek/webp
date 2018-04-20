@@ -196,6 +196,26 @@ func webpEncodeRGB(pix []byte, width, height, stride int, quality float32) (outp
 	return
 }
 
+// WebpEncodeRGB :
+func WebpEncodeRGB(output *[]byte, width, height, stride int, quality float32) (int, error) {
+	var cptr_size C.size_t
+	var cptr = C.webpEncodeRGB(
+		(*C.uint8_t)(unsafe.Pointer(&(*output)[0])), C.int(width), C.int(height),
+		C.int(stride), C.float(quality),
+		&cptr_size,
+	)
+	if cptr == nil || cptr_size == 0 {
+		return 0, errors.New("webpEncodeRGB: failed")
+	}
+	defer C.free(unsafe.Pointer(cptr))
+	outLen := int(cptr_size)
+	if len(*output) < outLen {
+		*output = make([]byte, outLen+1024)
+	}
+	copy(*output, ((*[1 << 30]byte)(unsafe.Pointer(cptr)))[0:outLen:outLen])
+	return outLen, nil
+}
+
 func webpEncodeRGBA(pix []byte, width, height, stride int, quality float32) (output []byte, err error) {
 	if len(pix) == 0 || width <= 0 || height <= 0 || stride <= 0 || quality < 0.0 {
 		err = errors.New("webpEncodeRGBA: bad arguments")
