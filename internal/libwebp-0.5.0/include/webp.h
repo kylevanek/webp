@@ -44,6 +44,14 @@ uint8_t* webpEncodeRGBA(
 	const uint8_t* rgba, int width, int height, int stride, float quality_factor,
 	size_t* output_size
 );
+uint8_t* webpEncodeBGRA(
+	const uint8_t* rgba, int width, int height, int stride, float quality_factor,
+	size_t* output_size
+);
+uint8_t* webpEncodeBGRX(
+	const uint8_t* rgba, int width, int height, int stride, float quality_factor,
+	size_t* output_size
+);
 
 uint8_t* webpEncodeLosslessGray(
 	const uint8_t* gray, int width, int height, int stride,

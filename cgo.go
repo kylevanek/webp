@@ -149,6 +149,20 @@ func C_webpEncodeRGBA(
 	))
 }
 
+func C_webpEncodeBGRA(
+	pix *C_uint8_t,
+	width C_int, height C_int, stride C_int,
+	quality_factor C_float,
+	output_size *C_size_t,
+) *C_uint8_t {
+	return (*C_uint8_t)(C.webpEncodeBGRA(
+		(*C.uint8_t)(pix),
+		(C.int)(width), (C.int)(height), (C.int)(stride),
+		(C.float)(quality_factor),
+		(*C.size_t)(output_size),
+	))
+}
+
 func C_webpEncodeLosslessGray(
 	pix *C_uint8_t,
 	width C_int, height C_int, stride C_int,

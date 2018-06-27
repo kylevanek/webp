@@ -132,6 +132,24 @@ uint8_t* webpEncodeRGBA(
 	return output;
 }
 
+uint8_t* webpEncodeBGRA(
+	const uint8_t* rgba, int width, int height, int stride, float quality_factor,
+	size_t* output_size
+) {
+	uint8_t* output = NULL;
+	*output_size = WebPEncodeBGRA(rgba, width, height, stride, quality_factor, &output);
+	return output;
+}
+
+uint8_t* webpEncodeBGRX(
+	const uint8_t* rgba, int width, int height, int stride, float quality_factor,
+	size_t* output_size
+) {
+	uint8_t* output = NULL;
+	*output_size = WebPEncodeBGRX(rgba, width, height, stride, quality_factor, &output);
+	return output;
+}
+
 uint8_t* webpEncodeLosslessGray(
 	const uint8_t* gray, int width, int height, int stride,
 	size_t* output_size

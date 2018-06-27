@@ -27,6 +27,7 @@ package webp
 import "C"
 import (
 	"errors"
+	"reflect"
 	"unsafe"
 )
 
@@ -210,9 +211,72 @@ func WebpEncodeRGB(output *[]byte, width, height, stride int, quality float32) (
 	defer C.free(unsafe.Pointer(cptr))
 	outLen := int(cptr_size)
 	if len(*output) < outLen {
-		*output = make([]byte, outLen+1024)
+		*output = make([]byte, outLen)
 	}
-	copy(*output, ((*[1 << 30]byte)(unsafe.Pointer(cptr)))[0:outLen:outLen])
+	var unsafeSlice []uint8
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&unsafeSlice))
+	sliceHeader.Data = uintptr(unsafe.Pointer(cptr))
+	sliceHeader.Len = outLen
+	sliceHeader.Cap = outLen
+	copy(*output, unsafeSlice[:outLen])
+	// unsafeSlice = nil
+	//copy(*output, ((*[1 << 30]byte)(unsafe.Pointer(cptr)))[0:outLen:outLen])
+	return outLen, nil
+}
+
+// WebpEncodeBGRA :
+func WebpEncodeBGRA(output *[]byte, width, height, stride int, quality float32) (int, error) {
+	var cptr_size C.size_t
+	var cptr = C.webpEncodeBGRA(
+		(*C.uint8_t)(unsafe.Pointer(&(*output)[0])), C.int(width), C.int(height),
+		C.int(stride), C.float(quality),
+		&cptr_size,
+	)
+	if cptr == nil || cptr_size == 0 {
+		return 0, errors.New("WebpEncodeBGRA: failed")
+	}
+	defer C.free(unsafe.Pointer(cptr))
+	outLen := int(cptr_size)
+	if len(*output) < outLen {
+		*output = make([]byte, outLen)
+	}
+	var unsafeSlice []uint8
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&unsafeSlice))
+	sliceHeader.Data = uintptr(unsafe.Pointer(cptr))
+	sliceHeader.Len = outLen
+	sliceHeader.Cap = outLen
+	copy(*output, unsafeSlice[:outLen])
+	// unsafeSlice = nil
+	//copy(*output, ((*[1 << 30]byte)(unsafe.Pointer(cptr)))[0:outLen:outLen])
+	//copy(*output, unsafeSlice)
+	return outLen, nil
+}
+
+// WebpEncodeBGRX :
+func WebpEncodeBGRX(output *[]byte, width, height, stride int, quality float32) (int, error) {
+	var cptr_size C.size_t
+	var cptr = C.webpEncodeBGRX(
+		(*C.uint8_t)(unsafe.Pointer(&(*output)[0])), C.int(width), C.int(height),
+		C.int(stride), C.float(quality),
+		&cptr_size,
+	)
+	if cptr == nil || cptr_size == 0 {
+		return 0, errors.New("WebpEncodeBGRX: failed")
+	}
+	defer C.free(unsafe.Pointer(cptr))
+	outLen := int(cptr_size)
+	if len(*output) < outLen {
+		*output = make([]byte, outLen)
+	}
+	var unsafeSlice []uint8
+	sliceHeader := (*reflect.SliceHeader)(unsafe.Pointer(&unsafeSlice))
+	sliceHeader.Data = uintptr(unsafe.Pointer(cptr))
+	sliceHeader.Len = outLen
+	sliceHeader.Cap = outLen
+	copy(*output, unsafeSlice[:outLen])
+	// unsafeSlice = nil
+	//copy(*output, ((*[1 << 30]byte)(unsafe.Pointer(cptr)))[0:outLen:outLen])
+	//copy(*output, unsafeSlice)
 	return outLen, nil
 }
 

@@ -58,6 +58,9 @@ WEBP_EXTERN(size_t) WebPEncodeRGBA(const uint8_t* rgba,
 WEBP_EXTERN(size_t) WebPEncodeBGRA(const uint8_t* bgra,
                                    int width, int height, int stride,
                                    float quality_factor, uint8_t** output);
+WEBP_EXTERN(size_t) WebPEncodeBGRX(const uint8_t* bgra,
+                                   int width, int height, int stride,
+                                   float quality_factor, uint8_t** output);
 
 // These functions are the equivalent of the above, but compressing in a
 // lossless manner. Files are usually larger than lossy format, but will

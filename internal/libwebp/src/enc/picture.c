@@ -270,6 +270,7 @@ ENCODE_FUNC(WebPEncodeRGB, WebPPictureImportRGB)
 ENCODE_FUNC(WebPEncodeBGR, WebPPictureImportBGR)
 ENCODE_FUNC(WebPEncodeRGBA, WebPPictureImportRGBA)
 ENCODE_FUNC(WebPEncodeBGRA, WebPPictureImportBGRA)
+ENCODE_FUNC(WebPEncodeBGRX, WebPPictureImportBGRX)
 
 #undef ENCODE_FUNC
 
