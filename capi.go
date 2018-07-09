@@ -39,7 +39,6 @@ func webpGetInfo(data []byte) (width, height int, hasAlpha bool, err error) {
 	if len(data) > maxWebpHeaderSize {
 		data = data[:maxWebpHeaderSize]
 	}
-
 	var features C.WebPBitstreamFeatures
 	if C.WebPGetFeatures((*C.uint8_t)(unsafe.Pointer(&data[0])), C.size_t(len(data)), &features) != C.VP8_STATUS_OK {
 		err = errors.New("C.WebPGetFeatures: failed")
@@ -254,6 +253,7 @@ func WebpEncodeBGRA(output *[]byte, width, height, stride int, quality float32) 
 
 // WebpEncodeBGRX :
 func WebpEncodeBGRX(output *[]byte, width, height, stride int, quality float32) (int, error) {
+	// internal\libwebp\src\enc\picture.c:263
 	var cptr_size C.size_t
 	var cptr = C.webpEncodeBGRX(
 		(*C.uint8_t)(unsafe.Pointer(&(*output)[0])), C.int(width), C.int(height),

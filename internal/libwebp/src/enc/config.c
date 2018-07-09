@@ -39,13 +39,13 @@ int WebPConfigInitInternal(WebPConfig* config,
   config->preprocessing = 0;
   config->autofilter = 0;
   config->partition_limit = 0;
-  config->alpha_compression = 1;
-  config->alpha_filtering = 1;
-  config->alpha_quality = 100;
+  config->alpha_compression = 0;//1;
+  config->alpha_filtering = 0;//1;
+  config->alpha_quality = 0;//100;
   config->lossless = 0;
   config->image_hint = WEBP_HINT_DEFAULT;
   config->emulate_jpeg_size = 0;
-  config->thread_level = 0;
+  config->thread_level = 1;
   config->low_memory = 0;
 
   // TODO(skal): tune.
